@@ -12,8 +12,9 @@ describe 'megaraid::megacli' do
     it do
       should include_class('megaraid::megacli')
       should contain_package('MegaCli').with_ensure('present')
-      should contain_exec('alternatives --install /usr/bin/MegaCli MegaCli /opt/MegaRAID/MegaCli/MegaCli64 1')
-      should contain_exec('alternatives --set MegaCli /opt/MegaRAID/MegaCli/MegaCli64')
+      should contain_file('/usr/bin/MegaCli').with_ensure('link').with_target('/opt/MegaRAID/MegaCli/MegaCli64')
+#      should contain_exec('alternatives --install /usr/bin/MegaCli MegaCli /opt/MegaRAID/MegaCli/MegaCli64 1')
+#      should contain_exec('alternatives --set MegaCli /opt/MegaRAID/MegaCli/MegaCli64')
     end
   end
 
@@ -28,8 +29,9 @@ describe 'megaraid::megacli' do
     it do
       should include_class('megaraid::megacli')
       should contain_package('MegaCli').with_ensure('present')
-      should contain_exec('alternatives --install /usr/bin/MegaCli MegaCli /opt/MegaRAID/MegaCli/MegaCli 1')
-      should contain_exec('alternatives --set MegaCli /opt/MegaRAID/MegaCli/MegaCli')
+      should contain_file('/usr/bin/MegaCli').with_ensure('link').with_target('/opt/MegaRAID/MegaCli/MegaCli')
+#      should contain_exec('alternatives --install /usr/bin/MegaCli MegaCli /opt/MegaRAID/MegaCli/MegaCli 1')
+#      should contain_exec('alternatives --set MegaCli /opt/MegaRAID/MegaCli/MegaCli')
     end
   end
 

@@ -4,7 +4,6 @@
 #
 # Joshua Hoblitt <jhoblitt@cpan.org>
 #
-#
 # === Copyright
 #
 # Copyright (C) 2012-2013 Joshua Hoblitt
@@ -21,12 +20,10 @@ class megaraid::params {
     'sas_ir_snmp',
     'sas_snmp'
   ]
-  $megacli_pkg = 'MegaCli'
 
   case $::architecture {
-    'x86_64' : { $megacli_path = '/opt/MegaRAID/MegaCli/MegaCli64' }
-    'i386'   : { $megacli_path = '/opt/MegaRAID/MegaCli/MegaCli' }
-    default  : {
+    'x86_64','i386': {  }
+    default : {
       fail("Module ${module_name} is not supported on ${::architecture}")
     }
   }

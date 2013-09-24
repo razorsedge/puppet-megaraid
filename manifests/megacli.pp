@@ -2,16 +2,13 @@
 #
 # installs the package(s) that provide the `MegaCLI` utility
 #
-#
 # === Parameters
 #
 # Accepts no parameters.
 #
-#
 # === Examples
 #
-#    class{ 'megaraid::megacli': }
-#
+#   class { 'megaraid::megacli': }
 #
 # === Authors
 #
@@ -22,20 +19,25 @@
 # Copyright (C) 2012-2013 Joshua Hoblitt
 #
 class megaraid::megacli inherits megaraid::params {
-
-  package { $megaraid::params::megacli_pkg:
-    ensure  => present,
+  case $::architecture {
+    'x86_64' : { $megacli_path = '/opt/MegaRAID/MegaCli/MegaCli64' }
+    'i386'   : { $megacli_path = '/opt/MegaRAID/MegaCli/MegaCli' }
   }
 
-  $cli = $megaraid::params::megacli_path
-  $priority = 1
-  $bin = 'MegaCli'
-
-  exec { "alternatives --install /usr/bin/${bin} ${bin} ${cli} ${priority}":
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin',
-    unless  => "test /etc/alternatives/${bin} -ef ${cli}"
-  } -> exec { "alternatives --set ${bin} ${cli}":
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin',
-    unless  => "test /etc/alternatives/${bin} -ef ${cli}"
+  package { 'MegaCli':
+    ensure => present,
   }
+
+  file { '/usr/bin/MegaCli':
+    ensure => link,
+    target => $megacli_path,
+  }
+#  exec { "alternatives --install /usr/bin/MegaCli MegaCli ${megacli_path} 1":
+#    path   => '/bin:/sbin:/usr/bin:/usr/sbin',
+#    unless => "test /etc/alternatives/MegaCli -ef ${megacli_path}"
+#  } ->
+#  exec { "alternatives --set MegaCli ${megacli_path}":
+#    path   => '/bin:/sbin:/usr/bin:/usr/sbin',
+#    unless => "test /etc/alternatives/MegaCli -ef ${megacli_path}"
+#  }
 }
